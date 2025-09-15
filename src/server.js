@@ -15,6 +15,12 @@ app.use(express.json());
 
 app.use("/api/v1", transactionRoutes);
 
+app.get("/api/v1/health", (req, res) => {
+    res.send({
+        status: "OK"
+    })
+});
+
 initDatabase().then(() =>{
     app.listen(PORT, () => {
         console.log("Connection successfull! ", PORT);
