@@ -68,22 +68,22 @@ const getTransactionSummary = async (req, res) => {
     
     const {userId} = req.params;
     try {
-        const totalBalance = await sql`
+        const balance = await sql`
             SELECT COALESCE(SUM(amount), 0) as balance FROM transactions WHERE user_id = ${userId}; 
         `;
 
-        const incomeTotal = await sql`
+        const income = await sql`
             SELECT COALESCE(SUM(amount), 0) as income FROM transactions WHERE user_id = ${userId} AND amount > 0;
         `;
 
-        const expenseTotal = await sql`
+        const expense = await sql`
             SELECT COALESCE(SUM(amount), 0) as expense FROM transactions WHERE user_id = ${userId} AND amount < 0;
         `;
 
         res.status(201).json({
-            balance: totalBalance[0].balance,
-            income: incomeTotal[0].income,
-            expense: expenseTotal[0].expense,
+            balance: balance[0].balance,
+            income: income[0].income,
+            expense: expense[0].expense,
         });
 
     } catch (error) {
